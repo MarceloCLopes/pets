@@ -6,3 +6,4 @@ Projeto desenvolvido durante a semana Multi-Stack #3 da TreinaWeb, consiste em u
 
 - NextJS
 - Material UI
+- Axios

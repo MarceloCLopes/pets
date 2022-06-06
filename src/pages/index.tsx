@@ -1,8 +1,33 @@
 import type { NextPage } from "next";
+
 import { List } from "../ui/components/List/List";
 import { Title } from "../ui/components/Title/Title";
 
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  Grid,
+  Snackbar,
+  TextField,
+} from "@mui/material";
+
+import { useIndex } from "../data/hooks/pages/useIndex";
+
 const Home: NextPage = () => {
+  const {
+    listPets,
+    petSelected,
+    setPetSelected,
+    email,
+    setEmail,
+    amount,
+    setAmount,
+    message,
+    setMessage,
+    adotar,
+  } = useIndex();
+
   return (
     <>
       <Title
@@ -14,25 +39,51 @@ const Home: NextPage = () => {
           </span>
         }
       />
-      <List
-        pets={[
-          {
-            id: 1,
-            name: "Killua",
-            history:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequat explicabo iure dicta consectetur commodi quaerat sit aperiam, enim, aliquid iusto, explicabo iure dicta consectetur commodi quaerat sit aperiam, enim, aliquid iusto ",
-            photo:
-              "https://i.pinimg.com/564x/ed/d7/c7/edd7c719e49a2bc9d04e168971cd3802.jpg",
-          },
-          {
-            id: 2,
-            name: "Killua",
-            history:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequat explicabo iure dicta consectetur commodi quaerat sit aperiam, enim, aliquid iusto ",
-            photo:
-              "https://i.pinimg.com/originals/c7/4a/08/c74a08f746a58e554c7a26dc747d8a9e.jpg",
-          },
-        ]}
+      <List pets={listPets} onSelect={(pet) => setPetSelected(pet)} />
+
+      <Dialog
+        open={petSelected !== null}
+        fullWidth
+        PaperProps={{ sx: { p: 5 } }}
+        onClose={() => setPetSelected(null)}
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              label={"E-mail"}
+              type={"email"}
+              fullWidth
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              label={"Quantia por mês"}
+              type={"number"}
+              fullWidth
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+          </Grid>
+        </Grid>
+
+        <DialogActions sx={{ mt: 5 }}>
+          <Button color={"secondary"} onClick={() => setPetSelected(null)}>
+            Cancelar
+          </Button>
+          <Button variant={"contained"} onClick={() => adotar()}>
+            Confirmar adoção
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        open={message.length > 0}
+        message={message}
+        autoHideDuration={2500}
+        onClose={() => setMessage("")}
       />
     </>
   );
